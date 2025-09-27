@@ -40,7 +40,8 @@
     "react-slick": "^0.30.3",
     "sass": "^1.89.2",
     "slick-carousel": "^1.8.1",
-    "vite-plugin-sass": "^0.1.0"
+    "vite-plugin-sass": "^0.1.0",
+    "firebase-admin": "^12.6.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",

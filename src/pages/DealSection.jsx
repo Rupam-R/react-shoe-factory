@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faEdit, faTrash, faPlus, faSearch, 
@@ -8,9 +8,8 @@ import {
 import axios from 'axios';
 import './DealSection.css';
 
-const API_BASE_URL = import.meta.env.MODE === 'development' 
-  ? 'http://localhost:5000'
-  : '';
+// Use Netlify proxy with relative /api/* paths
+const API_BASE_URL = '';
 
 const DealSection = () => {
   const [deals, setDeals] = useState([]);
@@ -22,7 +21,6 @@ const DealSection = () => {
   const [editDeal, setEditDeal] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState('all');
   
   const [formData, setFormData] = useState({
     deal_name: '',
@@ -41,12 +39,8 @@ const DealSection = () => {
   // Helper function to get full image path
   const getImagePath = (imageName) => {
     if (!imageName) return '/img/deal.png';
-    
-    if (imageName.startsWith('http') || imageName.startsWith('/')) {
-      return imageName;
-    }
-    
-    return `backend/deal-img/${imageName}`;
+    if (imageName.startsWith('http') || imageName.startsWith('/')) return imageName;
+    return /deal-img/;
   };
 
   // Check if deal is still valid
@@ -62,26 +56,23 @@ const DealSection = () => {
       try {
         setLoading(true);
         setError(null);
-        
         const response = await axios.get(
-          `${API_BASE_URL}/api/admin/deals`, 
+          /api/admin/deals,
           {
             params: {
               page: currentPage,
               limit: DEFAULT_PAGE_SIZE,
               search: searchTerm,
-              filter: selectedFilter === 'all' ? '' : selectedFilter
+              filter: filters.includes(searchTerm) ? searchTerm : ''
             },
             withCredentials: true
           }
         );
-
         const dealsWithImagePaths = response.data.deals?.map(deal => ({
           ...deal,
           product_image: getImagePath(deal.product_image),
           is_valid: isDealValid(deal)
         })) || [];
-
         setDeals(dealsWithImagePaths);
         setTotalPages(response.data.pagination?.totalPages || 1);
       } catch (err) {
@@ -90,16 +81,12 @@ const DealSection = () => {
         setLoading(false);
       }
     };
-
     fetchDeals();
-  }, [currentPage, searchTerm, selectedFilter]);
+  }, [currentPage, searchTerm]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleEditClick = (deal) => {
@@ -122,13 +109,11 @@ const DealSection = () => {
     try {
       setLoading(true);
       setError(null);
-
       const response = await axios.put(
-        `${API_BASE_URL}/api/admin/deals/${editDeal.id}`,
+        /api/admin/deals/,
         formData,
         { withCredentials: true }
       );
-
       setDeals(deals.map(deal => 
         deal.id === editDeal.id ? {
           ...response.data.deal,
@@ -149,14 +134,12 @@ const DealSection = () => {
     try {
       setLoading(true);
       setError(null);
-
       const response = await axios.post(
-        `${API_BASE_URL}/api/admin/deals`,
+        /api/admin/deals,
         formData,
         { withCredentials: true }
       );
-
-      setDeals([{
+      setDeals([{ 
         ...response.data.deal,
         product_image: getImagePath(response.data.deal.product_image),
         is_valid: isDealValid(response.data.deal)
@@ -180,56 +163,31 @@ const DealSection = () => {
   };
 
   const handleDelete = async (dealId) => {
-    if (window.confirm('Are you sure you want to delete this deal?')) {
-      try {
-        setLoading(true);
-        await axios.delete(
-          `${API_BASE_URL}/api/admin/deals/${dealId}`,
-          { withCredentials: true }
-        );
-        
-        setDeals(deals.filter(deal => deal.id !== dealId));
-      } catch (err) {
-        setError(err.response?.data?.message || 'Failed to delete deal');
-      } finally {
-        setLoading(false);
-      }
+    if (!window.confirm('Are you sure you want to delete this deal?')) return;
+    try {
+      setLoading(true);
+      await axios.delete(/api/admin/deals/, { withCredentials: true });
+      setDeals(deals.filter(deal => deal.id !== dealId));
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to delete deal');
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      setError('Please select an image file');
-      return;
-    }
-
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      setError('Image size should be less than 5MB');
-      return;
-    }
-
+    if (!file.type.startsWith('image/')) return setError('Please select an image file');
+    if (file.size > 5 * 1024 * 1024) return setError('Image size should be less than 5MB');
     try {
       const previewUrl = URL.createObjectURL(file);
-      
       const uploadFormData = new FormData();
       uploadFormData.append('image', file);
-
-      const response = await axios.post(
-        `${API_BASE_URL}/api/upload-deal-image`,
-        uploadFormData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          },
-          withCredentials: true
-        }
-      );
-
+      const response = await axios.post(/api/upload-deal-image, uploadFormData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        withCredentials: true
+      });
       setFormData(prev => ({
         ...prev,
         product_image: response.data.filename,
@@ -240,15 +198,6 @@ const DealSection = () => {
     }
   };
 
-  // Clean up object URLs when component unmounts or modals close
-  useEffect(() => {
-    return () => {
-      if (formData.product_image_preview && formData.product_image_preview.startsWith('blob:')) {
-        URL.revokeObjectURL(formData.product_image_preview);
-      }
-    };
-  }, [formData.product_image_preview]);
-
   if (loading && !showEditModal && !showAddModal) {
     return (
       <div className="loading">
@@ -256,7 +205,6 @@ const DealSection = () => {
       </div>
     );
   }
-
   if (error) {
     return <div className="error">Error: {error}</div>;
   }
@@ -284,9 +232,9 @@ const DealSection = () => {
             <div className="filter-dropdown">
               <FontAwesomeIcon icon={faFilter} />
               <select
-                value={selectedFilter}
+                value={filters.includes(searchTerm) ? searchTerm : 'all'}
                 onChange={(e) => {
-                  setSelectedFilter(e.target.value);
+                  setSearchTerm(e.target.value);
                   setCurrentPage(1);
                 }}
               >
@@ -298,10 +246,7 @@ const DealSection = () => {
               </select>
             </div>
           </div>
-          <button 
-            onClick={() => setShowAddModal(true)}
-            className="add-deal-btn"
-          >
+          <button onClick={() => setShowAddModal(true)} className="add-deal-btn">
             <FontAwesomeIcon icon={faPlus} /> Add Deal
           </button>
         </div>
@@ -332,42 +277,32 @@ const DealSection = () => {
                         src={deal.product_image}
                         alt={deal.product_name} 
                         className="deal-thumbnail"
-                        onError={(e) => {
-                          e.target.src = `${API_BASE_URL}/img/deal.png`;
-                        }}
+                        onError={(e) => { e.target.src = /img/deal.png; }}
                       />
                     )}
                   </td>
                   <td>{deal.deal_name}</td>
                   <td>{deal.product_name}</td>
                   <td className="details-cell">
-                    {deal.deal_details.length > 50 
-                      ? `${deal.deal_details.substring(0, 50)}...` 
+                    {deal.deal_details?.length > 50 
+                      ? ${deal.deal_details.substring(0, 50)}... 
                       : deal.deal_details}
                   </td>
-                  <td>${deal.product_price}</td>
+                  <td></td>
                   <td>
                     <FontAwesomeIcon icon={faCalendar} /> {new Date(deal.deal_valid).toLocaleDateString()}
                   </td>
                   <td>
-                    <span className={`status-badge ${deal.is_valid ? 'active' : 'expired'}`}>
+                    <span className={status-badge }>
                       {deal.is_valid ? 'Active' : 'Expired'}
                     </span>
                   </td>
                   <td>{new Date(deal.date).toLocaleDateString()}</td>
                   <td className="actions">
-                    <button 
-                      onClick={() => handleEditClick(deal)} 
-                      className="edit-btn"
-                      disabled={loading}
-                    >
+                    <button onClick={() => handleEditClick(deal)} className="edit-btn" disabled={loading}>
                       <FontAwesomeIcon icon={faEdit} />
                     </button>
-                    <button 
-                      onClick={() => handleDelete(deal.id)} 
-                      className="delete-btn"
-                      disabled={loading}
-                    >
+                    <button onClick={() => handleDelete(deal.id)} className="delete-btn" disabled={loading}>
                       <FontAwesomeIcon icon={faTrash} />
                     </button>
                   </td>
@@ -395,7 +330,6 @@ const DealSection = () => {
           >
             Previous
           </button>
-          
           {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
             <button
               key={page}
@@ -406,7 +340,6 @@ const DealSection = () => {
               {page}
             </button>
           ))}
-          
           <button 
             onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
             disabled={currentPage === totalPages || loading}
@@ -427,7 +360,7 @@ const DealSection = () => {
               <button 
                 onClick={() => {
                   setShowEditModal(false);
-                  if (formData.product_image_preview && formData.product_image_preview.startsWith('blob:')) {
+                  if (formData.product_image_preview?.startsWith('blob:')) {
                     URL.revokeObjectURL(formData.product_image_preview);
                   }
                 }} 
@@ -437,146 +370,58 @@ const DealSection = () => {
                 <FontAwesomeIcon icon={faTimes} />
               </button>
             </div>
-            
             <form onSubmit={handleSubmitEdit}>
               <div className="form-row">
                 <div className="form-group">
                   <label>Deal Name</label>
-                  <input
-                    type="text"
-                    name="deal_name"
-                    value={formData.deal_name}
-                    onChange={handleInputChange}
-                    required
-                    disabled={loading}
-                  />
+                  <input type="text" name="deal_name" value={formData.deal_name} onChange={handleInputChange} required disabled={loading} />
                 </div>
-                
                 <div className="form-group">
                   <label>Product Name</label>
-                  <input
-                    type="text"
-                    name="product_name"
-                    value={formData.product_name}
-                    onChange={handleInputChange}
-                    required
-                    disabled={loading}
-                  />
+                  <input type="text" name="product_name" value={formData.product_name} onChange={handleInputChange} required disabled={loading} />
                 </div>
               </div>
-              
               <div className="form-group">
                 <label>Deal Details</label>
-                <textarea
-                  name="deal_details"
-                  value={formData.deal_details}
-                  onChange={handleInputChange}
-                  required
-                  disabled={loading}
-                  rows="3"
-                />
+                <textarea name="deal_details" value={formData.deal_details} onChange={handleInputChange} required disabled={loading} rows="3" />
               </div>
-              
               <div className="form-row">
                 <div className="form-group">
                   <label>Product Price ($)</label>
-                  <input
-                    type="number"
-                    name="product_price"
-                    value={formData.product_price}
-                    onChange={handleInputChange}
-                    required
-                    min="0"
-                    step="0.01"
-                    disabled={loading}
-                  />
+                  <input type="number" name="product_price" value={formData.product_price} onChange={handleInputChange} required min="0" step="0.01" disabled={loading} />
                 </div>
-                
                 <div className="form-group">
                   <label>Valid Until</label>
-                  <input
-                    type="date"
-                    name="deal_valid"
-                    value={formData.deal_valid}
-                    onChange={handleInputChange}
-                    required
-                    disabled={loading}
-                  />
+                  <input type="date" name="deal_valid" value={formData.deal_valid} onChange={handleInputChange} required disabled={loading} />
                 </div>
               </div>
-              
               <div className="form-group">
                 <label>Product Details</label>
-                <textarea
-                  name="product_details"
-                  value={formData.product_details}
-                  onChange={handleInputChange}
-                  required
-                  disabled={loading}
-                  rows="3"
-                />
+                <textarea name="product_details" value={formData.product_details} onChange={handleInputChange} required disabled={loading} rows="3" />
               </div>
-              
               <div className="form-group">
                 <label>Product Image</label>
                 {formData.product_image_preview && (
                   <div className="image-preview-container">
-                    <img 
-                      src={formData.product_image_preview}
-                      alt="Product preview" 
-                      className="image-preview"
-                    />
-                    <button
-                      type="button"
-                      className="remove-image-btn"
-                      onClick={() => {
-                        if (formData.product_image_preview && formData.product_image_preview.startsWith('blob:')) {
-                          URL.revokeObjectURL(formData.product_image_preview);
-                        }
-                        setFormData(prev => ({
-                          ...prev,
-                          product_image: '',
-                          product_image_preview: ''
-                        }));
-                      }}
-                    >
+                    <img src={formData.product_image_preview} alt="Product preview" className="image-preview" />
+                    <button type="button" className="remove-image-btn" onClick={() => {
+                      if (formData.product_image_preview?.startsWith('blob:')) URL.revokeObjectURL(formData.product_image_preview);
+                      setFormData(prev => ({ ...prev, product_image: '', product_image_preview: '' }));
+                    }}>
                       <FontAwesomeIcon icon={faTimes} />
                     </button>
                   </div>
                 )}
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  disabled={loading}
-                  className="image-upload-input"
-                />
+                <input type="file" accept="image/*" onChange={handleImageUpload} disabled={loading} className="image-upload-input" />
                 <div className="image-upload-hint">Supported formats: JPG, PNG, WEBP. Max size: 5MB</div>
               </div>
-              
               <div className="form-actions">
-                <button 
-                  type="button" 
-                  onClick={() => {
-                    setShowEditModal(false);
-                    if (formData.product_image_preview && formData.product_image_preview.startsWith('blob:')) {
-                      URL.revokeObjectURL(formData.product_image_preview);
-                    }
-                  }}
-                  disabled={loading}
-                >
-                  Cancel
-                </button>
-                <button 
-                  type="submit" 
-                  className="save-btn"
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <><FontAwesomeIcon icon={faSpinner} spin /> Saving...</>
-                  ) : (
-                    <><FontAwesomeIcon icon={faSave} /> Save Changes</>
-                  )}
+                <button type="button" onClick={() => {
+                  setShowEditModal(false);
+                  if (formData.product_image_preview?.startsWith('blob:')) URL.revokeObjectURL(formData.product_image_preview);
+                }} disabled={loading}>Cancel</button>
+                <button type="submit" className="save-btn" disabled={loading}>
+                  {loading ? (<><FontAwesomeIcon icon={faSpinner} spin /> Saving...</>) : (<><FontAwesomeIcon icon={faSave} /> Save Changes</>)}
                 </button>
               </div>
             </form>
@@ -589,162 +434,66 @@ const DealSection = () => {
         <div className="modal-overlay">
           <div className="deal-modal">
             <div className="modal-header">
-              <h3>
-                <FontAwesomeIcon icon={faPlus} /> Add New Deal
-              </h3>
-              <button 
-                onClick={() => {
-                  setShowAddModal(false);
-                  if (formData.product_image_preview && formData.product_image_preview.startsWith('blob:')) {
-                    URL.revokeObjectURL(formData.product_image_preview);
-                  }
-                }} 
-                className="close-btn"
-                disabled={loading}
-              >
+              <h3><FontAwesomeIcon icon={faPlus} /> Add New Deal</h3>
+              <button onClick={() => {
+                setShowAddModal(false);
+                if (formData.product_image_preview?.startsWith('blob:')) URL.revokeObjectURL(formData.product_image_preview);
+              }} className="close-btn" disabled={loading}>
                 <FontAwesomeIcon icon={faTimes} />
               </button>
             </div>
-            
             <form onSubmit={handleSubmitAdd}>
               <div className="form-row">
                 <div className="form-group">
                   <label>Deal Name</label>
-                  <input
-                    type="text"
-                    name="deal_name"
-                    value={formData.deal_name}
-                    onChange={handleInputChange}
-                    required
-                    disabled={loading}
-                  />
+                  <input type="text" name="deal_name" value={formData.deal_name} onChange={handleInputChange} required disabled={loading} />
                 </div>
-                
                 <div className="form-group">
                   <label>Product Name</label>
-                  <input
-                    type="text"
-                    name="product_name"
-                    value={formData.product_name}
-                    onChange={handleInputChange}
-                    required
-                    disabled={loading}
-                  />
+                  <input type="text" name="product_name" value={formData.product_name} onChange={handleInputChange} required disabled={loading} />
                 </div>
               </div>
-              
               <div className="form-group">
                 <label>Deal Details</label>
-                <textarea
-                  name="deal_details"
-                  value={formData.deal_details}
-                  onChange={handleInputChange}
-                  required
-                  disabled={loading}
-                  rows="3"
-                />
+                <textarea name="deal_details" value={formData.deal_details} onChange={handleInputChange} required disabled={loading} rows="3" />
               </div>
-              
               <div className="form-row">
                 <div className="form-group">
                   <label>Product Price ($)</label>
-                  <input
-                    type="number"
-                    name="product_price"
-                    value={formData.product_price}
-                    onChange={handleInputChange}
-                    required
-                    min="0"
-                    step="0.01"
-                    disabled={loading}
-                  />
+                  <input type="number" name="product_price" value={formData.product_price} onChange={handleInputChange} required min="0" step="0.01" disabled={loading} />
                 </div>
-                
                 <div className="form-group">
                   <label>Valid Until</label>
-                  <input
-                    type="date"
-                    name="deal_valid"
-                    value={formData.deal_valid}
-                    onChange={handleInputChange}
-                    required
-                    disabled={loading}
-                  />
+                  <input type="date" name="deal_valid" value={formData.deal_valid} onChange={handleInputChange} required disabled={loading} />
                 </div>
               </div>
-              
               <div className="form-group">
                 <label>Product Details</label>
-                <textarea
-                  name="product_details"
-                  value={formData.product_details}
-                  onChange={handleInputChange}
-                  required
-                  disabled={loading}
-                  rows="3"
-                />
+                <textarea name="product_details" value={formData.product_details} onChange={handleInputChange} required disabled={loading} rows="3" />
               </div>
-              
               <div className="form-group">
                 <label>Product Image</label>
                 {formData.product_image_preview && (
                   <div className="image-preview-container">
-                    <img 
-                      src={formData.product_image_preview}
-                      alt="Product preview" 
-                      className="image-preview"
-                    />
-                    <button
-                      type="button"
-                      className="remove-image-btn"
-                      onClick={() => {
-                        if (formData.product_image_preview && formData.product_image_preview.startsWith('blob:')) {
-                          URL.revokeObjectURL(formData.product_image_preview);
-                        }
-                        setFormData(prev => ({
-                          ...prev,
-                          product_image: '',
-                          product_image_preview: ''
-                        }));
-                      }}
-                    >
+                    <img src={formData.product_image_preview} alt="Product preview" className="image-preview" />
+                    <button type="button" className="remove-image-btn" onClick={() => {
+                      if (formData.product_image_preview?.startsWith('blob:')) URL.revokeObjectURL(formData.product_image_preview);
+                      setFormData(prev => ({ ...prev, product_image: '', product_image_preview: '' }));
+                    }}>
                       <FontAwesomeIcon icon={faTimes} />
                     </button>
                   </div>
                 )}
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  disabled={loading}
-                  className="image-upload-input"
-                />
+                <input type="file" accept="image/*" onChange={handleImageUpload} disabled={loading} className="image-upload-input" />
                 <div className="image-upload-hint">Supported formats: JPG, PNG, WEBP. Max size: 5MB</div>
               </div>
-              
               <div className="form-actions">
-                <button 
-                  type="button" 
-                  onClick={() => {
-                    setShowAddModal(false);
-                    if (formData.product_image_preview && formData.product_image_preview.startsWith('blob:')) {
-                      URL.revokeObjectURL(formData.product_image_preview);
-                    }
-                  }}
-                  disabled={loading}
-                >
-                  Cancel
-                </button>
-                <button 
-                  type="submit" 
-                  className="save-btn"
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <><FontAwesomeIcon icon={faSpinner} spin /> Adding...</>
-                  ) : (
-                    <><FontAwesomeIcon icon={faPlus} /> Add Deal</>
-                  )}
+                <button type="button" onClick={() => {
+                  setShowAddModal(false);
+                  if (formData.product_image_preview?.startsWith('blob:')) URL.revokeObjectURL(formData.product_image_preview);
+                }} disabled={loading}>Cancel</button>
+                <button type="submit" className="save-btn" disabled={loading}>
+                  {loading ? (<><FontAwesomeIcon icon={faSpinner} spin /> Adding...</>) : (<><FontAwesomeIcon icon={faPlus} /> Add Deal</>)}
                 </button>
               </div>
             </form>
