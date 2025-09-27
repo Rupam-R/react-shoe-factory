@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function ServiceSection() {
@@ -29,7 +29,7 @@ function ServiceSection() {
     try {
       setLoading(true);
       setError('');
-      const response = await axios.get(`${API_BASE}/api/services`);
+      const response = await axios.get(`/api/services`);
       // Make sure it's always an array
       setServices(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
@@ -59,7 +59,7 @@ function ServiceSection() {
 
     try {
       setError('');
-      const res = await axios.post(`${API_BASE}/api/upload-service-image`, data, {
+      const res = await axios.post(`/api/upload-service-image`, data, {
         headers: { 
           'Content-Type': 'multipart/form-data',
         }
@@ -87,11 +87,11 @@ function ServiceSection() {
       };
 
       if (editingId) {
-        await axios.put(`${API_BASE}/api/admin/services/${editingId}`, submitData, {
+        await axios.put(`/api/admin/services/${editingId}`, submitData, {
           withCredentials: true
         });
       } else {
-        await axios.post(`${API_BASE}/api/admin/services`, submitData, {
+        await axios.post(`/api/admin/services`, submitData, {
           withCredentials: true
         });
       }
@@ -114,7 +114,7 @@ function ServiceSection() {
       date: service.date ? service.date.split('T')[0] : new Date().toISOString().split('T')[0]
     });
     setEditingId(service.id);
-    setImagePreview(service.image ? `${"backend"}${service.image}` : null);
+    setImagePreview(service.image ? `${service.image}` : null);
   };
 
   // Delete service
@@ -122,7 +122,7 @@ function ServiceSection() {
     if (window.confirm('Are you sure you want to delete this service?')) {
       try {
         setError('');
-        await axios.delete(`${API_BASE}/api/admin/services/${id}`, {
+        await axios.delete(`/api/admin/services/${id}`, {
           withCredentials: true
         });
         fetchServices();
@@ -215,7 +215,7 @@ function ServiceSection() {
                 {formData.image && !imagePreview && (
                   <div className="mt-2">
                     <img
-                      src={`${"backend"}${formData.image}`}
+                      src={`${formData.image}`}
                       alt="Current"
                       style={{ maxWidth: '100%', maxHeight: '200px' }}
                       className="img-thumbnail"
@@ -301,7 +301,7 @@ function ServiceSection() {
                       <td>
                         {service.image && (
                           <img
-                            src={`${"backend"}${service.image}`}
+                            src={`${service.image}`}
                             alt={service.name}
                             style={{ maxWidth: '150px', maxHeight: '80px' }}
                             className="img-thumbnail"

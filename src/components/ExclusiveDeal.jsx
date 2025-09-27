@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 const ExclusiveDeal = () => {
@@ -52,7 +52,7 @@ const ExclusiveDeal = () => {
       return imageName;
     }
     
-    return `backend/deal-img/${imageName}`;
+    return `/deal-img/${imageName}`;
   };
 
   useEffect(() => {
@@ -62,7 +62,7 @@ const ExclusiveDeal = () => {
   const fetchDeals = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API_BASE_URL}/api/deals`);
+      const response = await axios.get(`/api/deals`);
       
       // Filter only active deals (where deal_valid is in the future)
       const activeDeals = response.data.deals?.filter(deal => {

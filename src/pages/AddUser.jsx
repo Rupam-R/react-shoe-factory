@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faEnvelope, faLock, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
@@ -39,7 +39,7 @@ const AddUser = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/admin/users`, 
+      const response = await axios.post(`/api/admin/users`, 
         {
           username: formData.username,
           email: formData.email,

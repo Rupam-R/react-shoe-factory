@@ -1,4 +1,4 @@
-// Build a public image path from a known folder and file name
+﻿// Build a public image path from a known folder and file name
 // Example: getImagePath('banner-img', 'hero.jpg', '/img/banner-fallback.png')
 export function getImagePath(folder, name, fallback = '') {
   if (!name) return fallback || '';
@@ -9,3 +9,4 @@ export function getImagePath(folder, name, fallback = '') {
   // Otherwise, serve from public folder
   return `/${folder}/${name}`;
 }
+

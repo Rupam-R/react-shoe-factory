@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import "./Dashboard.css";
@@ -258,7 +258,7 @@ const AdminDashboard = () => {
             <h3>{stat.title}</h3>
             <div className="stat-value">{stat.value}</div>
             <div className={`stat-change ${stat.trend}`}>
-              {stat.change} <span>{stat.trend === 'up' ? '↑' : '↓'}</span>
+              {stat.change} <span>{stat.trend === 'up' ? 'â†‘' : 'â†“'}</span>
             </div>
           </div>
         ))}
@@ -349,7 +349,7 @@ const UserDashboard = () => {
         <h2>Recent Activity</h2>
         <ul>
           <li>
-            <span className="activity-icon">✓</span>
+            <span className="activity-icon">âœ“</span>
             <div>
               <p>Order #1234 shipped</p>
               <small>2 days ago</small>
@@ -363,7 +363,7 @@ const UserDashboard = () => {
             </div>
           </li>
           <li>
-            <span className="activity-icon">★</span>
+            <span className="activity-icon">â˜…</span>
             <div>
               <p>Product review requested</p>
               <small>5 days ago</small>

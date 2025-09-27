@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faEdit, faTrash, faPlus, faSearch, 
@@ -40,7 +40,7 @@ const BrandSection = () => {
       return imageName;
     }
     
-    return `backend/brand-img/${imageName}`;
+    return `/brand-img/${imageName}`;
   };
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const BrandSection = () => {
         setError(null);
         
         const response = await axios.get(
-          `${API_BASE_URL}/api/admin/brands`, 
+          `/api/admin/brands`, 
           {
             params: {
               page: currentPage,
@@ -104,7 +104,7 @@ const BrandSection = () => {
       setError(null);
 
       const response = await axios.put(
-        `${API_BASE_URL}/api/admin/brands/${editBrand.id}`,
+        `/api/admin/brands/${editBrand.id}`,
         formData,
         { withCredentials: true }
       );
@@ -130,7 +130,7 @@ const BrandSection = () => {
       setError(null);
 
       const response = await axios.post(
-        `${API_BASE_URL}/api/admin/brands`,
+        `/api/admin/brands`,
         formData,
         { withCredentials: true }
       );
@@ -158,7 +158,7 @@ const BrandSection = () => {
       try {
         setLoading(true);
         await axios.delete(
-          `${API_BASE_URL}/api/admin/brands/${brandId}`,
+          `/api/admin/brands/${brandId}`,
           { withCredentials: true }
         );
         
@@ -194,7 +194,7 @@ const BrandSection = () => {
       uploadFormData.append('image', file);
 
       const response = await axios.post(
-        `${API_BASE_URL}/api/upload-brand-image`,
+        `/api/upload-brand-image`,
         uploadFormData,
         {
           headers: {

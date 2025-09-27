@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function BannerSection() {
@@ -30,7 +30,7 @@ function BannerSection() {
     try {
       setLoading(true);
       setError('');
-      const response = await axios.get(`${API_BASE}/api/banners`);
+      const response = await axios.get(`/api/banners`);
       // Make sure it's always an array
       setBanners(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
@@ -60,7 +60,7 @@ function BannerSection() {
 
     try {
       setError('');
-      const res = await axios.post(`${API_BASE}/api/upload-banner-image`, data, {
+      const res = await axios.post(`/api/upload-banner-image`, data, {
         headers: { 
           'Content-Type': 'multipart/form-data',
           // Add credentials if needed for authentication
@@ -90,11 +90,11 @@ function BannerSection() {
       };
 
       if (editingId) {
-        await axios.put(`${API_BASE}/api/admin/banners/${editingId}`, submitData, {
+        await axios.put(`/api/admin/banners/${editingId}`, submitData, {
           withCredentials: true // Important for sending cookies
         });
       } else {
-        await axios.post(`${API_BASE}/api/admin/banners`, submitData, {
+        await axios.post(`/api/admin/banners`, submitData, {
           withCredentials: true // Important for sending cookies
         });
       }
@@ -117,7 +117,7 @@ function BannerSection() {
       date: banner.date ? banner.date.split('T')[0] : new Date().toISOString().split('T')[0]
     });
     setEditingId(banner.id);
-    setImagePreview(banner.image ? `${"backend"}${banner.image}` : null);
+    setImagePreview(banner.image ? `${banner.image}` : null);
   };
 
   // Delete banner
@@ -125,7 +125,7 @@ function BannerSection() {
     if (window.confirm('Are you sure you want to delete this banner?')) {
       try {
         setError('');
-        await axios.delete(`${API_BASE}/api/admin/banners/${id}`, {
+        await axios.delete(`/api/admin/banners/${id}`, {
           withCredentials: true // Important for sending cookies
         });
         fetchBanners();
@@ -304,7 +304,7 @@ function BannerSection() {
                       <td>
                         {banner.image && (
                           <img
-                            src={`${"backend"}${banner.image}`}
+                            src={`${banner.image}`}
                             alt={banner.name}
                             style={{ maxWidth: '150px', maxHeight: '80px' }}
                             className="img-thumbnail"

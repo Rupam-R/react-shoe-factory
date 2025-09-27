@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faEdit, faTrash, faPlus, faSearch, 
@@ -505,3 +505,4 @@ const DealSection = () => {
 };
 
 export default DealSection;
+

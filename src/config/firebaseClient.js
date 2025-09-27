@@ -1,4 +1,4 @@
-// Firebase Web SDK initialization using Vite environment variables
+﻿// Firebase Web SDK initialization using Vite environment variables
 // Configure these in your .env (local) and Netlify site environment variables (production)
 // See .env.example for the full list
 
@@ -39,3 +39,4 @@ export async function getFirebaseAnalytics() {
   }
   return null;
 }
+

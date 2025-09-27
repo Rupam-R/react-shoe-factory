@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faEdit, faTrash, faPlus, faSearch, 
@@ -45,7 +45,7 @@ const WeekdealSection = () => {
       return imageName;
     }
     
-    return `backend/weekdeal-img/${imageName}`;
+    return `/weekdeal-img/${imageName}`;
   };
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const WeekdealSection = () => {
         setError(null);
         
         const response = await axios.get(
-          `${API_BASE_URL}/api/admin/weekdeals`, 
+          `/api/admin/weekdeals`, 
           {
             params: {
               page: currentPage,
@@ -115,7 +115,7 @@ const WeekdealSection = () => {
       setError(null);
 
       const response = await axios.put(
-        `${API_BASE_URL}/api/admin/weekdeals/${editDeal.id}`,
+        `/api/admin/weekdeals/${editDeal.id}`,
         formData,
         { withCredentials: true }
       );
@@ -142,7 +142,7 @@ const WeekdealSection = () => {
       setError(null);
 
       const response = await axios.post(
-        `${API_BASE_URL}/api/admin/weekdeals`,
+        `/api/admin/weekdeals`,
         formData,
         { withCredentials: true }
       );
@@ -176,7 +176,7 @@ const WeekdealSection = () => {
       try {
         setLoading(true);
         await axios.delete(
-          `${API_BASE_URL}/api/admin/weekdeals/${dealId}`,
+          `/api/admin/weekdeals/${dealId}`,
           { withCredentials: true }
         );
         
@@ -212,7 +212,7 @@ const WeekdealSection = () => {
       uploadFormData.append('image', file);
 
       const response = await axios.post(
-        `${API_BASE_URL}/api/upload-weekdeal-image`,
+        `/api/upload-weekdeal-image`,
         uploadFormData,
         {
           headers: {
@@ -325,12 +325,12 @@ const WeekdealSection = () => {
                   <td>
                     {deal.deal_image && (
                       <img 
-                        src={`${deal.deal_image ? deal.deal_image : "backend/weekdeal-img/1755947699000-662985707.jpg"}`}
+                        src={`${deal.deal_image ? deal.deal_image : "/weekdeal-img/1755947699000-662985707.jpg"}`}
 
                         alt={`${deal.deal_name} deal`} 
                         className="weekdeal-banner-thumbnail"
                         onError={(e) => {
-                          e.target.src = `backend/weekdeal-img/1755947699000-662985707.jpg`;
+                          e.target.src = `/weekdeal-img/1755947699000-662985707.jpg`;
                         }}
                       />
                     )}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Category = () => {
@@ -16,7 +16,7 @@ const Category = () => {
     const fetchCategories = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_BASE}/api/categories`);
+        const response = await axios.get(`/api/categories`);
         // Make sure it's always an array
         const fetchedCategories = Array.isArray(response.data) ? response.data : [];
         setCategories(fetchedCategories);
@@ -138,12 +138,12 @@ const Category = () => {
                     <img 
                       className="img-fluid w-100" 
                       src={category.image.startsWith('http') || category.image.startsWith('/') 
-                        ? `${"backend"}${category.image}` 
+                        ? `${category.image}` 
                         : category.image
                       } 
                       alt={category.name}
                       onClick={() => openModal(category.image.startsWith('http') || category.image.startsWith('/') 
-                        ? `${"backend"}${category.image}` 
+                        ? `${category.image}` 
                         : category.image
                       )}
                       onError={(e) => {
@@ -153,7 +153,7 @@ const Category = () => {
                       style={{ cursor: 'pointer' }}
                     />
                     <div className="deal-details" onClick={() => openModal(category.image.startsWith('http') || category.image.startsWith('/') 
-                        ? `${"backend"}${category.image}` 
+                        ? `${category.image}` 
                         : category.image
                       )}>
                       <h6 className="deal-title">{category.name}</h6>
@@ -172,12 +172,12 @@ const Category = () => {
                 <img 
                   className="img-fluid w-100" 
                   src={rightColumnCategories[0].image.startsWith('http') || rightColumnCategories[0].image.startsWith('/') 
-                    ? `${"backend"}${rightColumnCategories[0].image}` 
+                    ? `${rightColumnCategories[0].image}` 
                     : rightColumnCategories[0].image
                   } 
                   alt={rightColumnCategories[0].name}
                   onClick={() => openModal(rightColumnCategories[0].image.startsWith('http') || rightColumnCategories[0].image.startsWith('/') 
-                    ? `${"backend"}${rightColumnCategories[0].image}` 
+                    ? `${rightColumnCategories[0].image}` 
                     : rightColumnCategories[0].image
                   )}
                   onError={(e) => {
@@ -186,7 +186,7 @@ const Category = () => {
                   style={{ cursor: 'pointer' }}
                 />
                 <div className="deal-details" onClick={() => openModal(rightColumnCategories[0].image.startsWith('http') || rightColumnCategories[0].image.startsWith('/') 
-                    ? `${"backend"}${rightColumnCategories[0].image}` 
+                    ? `${rightColumnCategories[0].image}` 
                     : rightColumnCategories[0].image
                   )}>
                   <h6 className="deal-title">{rightColumnCategories[0].name}</h6>
@@ -253,7 +253,7 @@ const Category = () => {
                 cursor: 'pointer'
               }}
             >
-              ×
+              Ã—
             </button>
           </div>
         </div>

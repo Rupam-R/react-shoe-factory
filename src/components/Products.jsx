@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+﻿import React, { useRef, useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -103,7 +103,7 @@ const Products = () => {
       return imageName;
     }
     
-    return `backend/product-img/${imageName}`;
+    return `/product-img/${imageName}`;
   };
 
   // Slider settings with custom arrows
@@ -125,7 +125,7 @@ const Products = () => {
         setLoading(true);
         
         // Fetch all products
-        const response = await axios.get(`${API_BASE_URL}/api/products`);
+        const response = await axios.get(`/api/products`);
         
         // Add image paths to all products
         const productsWithImages = response.data.products?.map(product => ({
@@ -361,7 +361,7 @@ const Products = () => {
                 cursor: 'pointer'
               }}
             >
-              ×
+              Ã—
             </button>
           </div>
         </div>

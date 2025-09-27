@@ -1,4 +1,4 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+﻿import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faTwitter, faDribbble, faBehance } from '@fortawesome/free-brands-svg-icons'
 import { faHeart, faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons'
 
@@ -85,3 +85,4 @@ const Footer = () => {
 }
 
 export default Footer
+

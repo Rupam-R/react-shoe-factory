@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faSearch, faTimes, faSave, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import './ManageUsers.css';
@@ -31,7 +31,7 @@ const ManageUsers = () => {
       setError(null);
       
       const response = await fetch(
-        `${API_BASE}/api/admin/users?page=${currentPage}&limit=${DEFAULT_PAGE_SIZE}&search=${searchTerm}`, 
+        `/api/admin/users?page=${currentPage}&limit=${DEFAULT_PAGE_SIZE}&search=${searchTerm}`, 
         {
           credentials: 'include',
           headers: {
@@ -97,7 +97,7 @@ const ManageUsers = () => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`${API_BASE}/api/admin/manage-users/${editUser.id}`, {
+      const response = await fetch(`/api/admin/manage-users/${editUser.id}`, {
         method: 'PUT',
         credentials: 'include',
         headers: {
@@ -135,7 +135,7 @@ const ManageUsers = () => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       try {
         setLoading(true);
-        const response = await fetch(`${API_BASE}/api/admin/users/${userId}`, {
+        const response = await fetch(`/api/admin/users/${userId}`, {
           method: 'DELETE',
           credentials: 'include'
         });

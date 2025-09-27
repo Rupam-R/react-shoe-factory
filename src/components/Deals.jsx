@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 
 const Deals = () => {
   const [deals, setDeals] = useState([]);
@@ -74,7 +74,7 @@ const Deals = () => {
           ? 'http://localhost:5000'
           : '';
         
-        const response = await fetch(`${API_BASE_URL}/api/weekdeals`);
+        const response = await fetch(`/api/weekdeals`);
         
         if (!response.ok) {
           throw new Error('Failed to fetch week deals');
@@ -113,7 +113,7 @@ const Deals = () => {
       ? 'http://localhost:5000'
       : '';
     
-    return `backend/weekdeal-img/${imageName}`;
+    return `/weekdeal-img/${imageName}`;
   };
 
   if (loading) {

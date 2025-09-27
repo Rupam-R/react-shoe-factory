@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Brands.css';
 
@@ -50,7 +50,7 @@ const Brands = () => {
     const fetchBrands = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_BASE_URL}/api/brands`);
+        const response = await axios.get(`/api/brands`);
         
         // Add image paths to brands
         const brandsWithImages = (response.data.brands || []).map(brand => ({
@@ -94,7 +94,7 @@ const Brands = () => {
       return imageName;
     }
     
-    return `backend/brand-img/${imageName}`;
+    return `/brand-img/${imageName}`;
   };
 
   if (loading) {

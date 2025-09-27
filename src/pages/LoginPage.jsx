@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import Header from '../components/Header';
@@ -21,7 +21,7 @@ const LoginPage = () => {
     setError('');
     
     try {
-      const response = await fetch(`${API_BASE}/api/admin/login`, {
+      const response = await fetch(`/api/admin/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ const LoginPage = () => {
     setError('');
     
     try {
-      const response = await fetch(`${API_BASE}/api/user/login`, {
+      const response = await fetch(`/api/user/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

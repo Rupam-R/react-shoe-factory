@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -18,7 +18,7 @@ const Banner = () => {
     {
       id: 1,
       name: "Summer Collection",
-      details: "Step into style this season with our Summer Collection – lightweight, trendy, and crafted for all-day comfort.",
+      details: "Step into style this season with our Summer Collection â€“ lightweight, trendy, and crafted for all-day comfort.",
       image: "img/banner/banner-img.png"
     },
     {
@@ -34,7 +34,7 @@ const Banner = () => {
     const fetchBanners = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_BASE}/api/banners`);
+        const response = await axios.get(`/api/banners`);
         setBanners(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error('Error fetching banners:', error);

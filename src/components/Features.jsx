@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Features = () => {
@@ -14,7 +14,7 @@ const Features = () => {
     const fetchServices = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_BASE}/api/services`);
+        const response = await axios.get(`/api/services`);
         // Make sure it's always an array
         setServices(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
@@ -95,7 +95,7 @@ const Features = () => {
                 <div className="f-icon">
                   <img 
                     src={service.image.startsWith('http') || service.image.startsWith('/') 
-                      ? `${"backend/"}${service.image}` 
+                      ? `${service.image}` 
                       : service.image
                     } 
                     alt={service.name}

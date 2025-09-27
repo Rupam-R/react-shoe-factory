@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faEnvelope, faPhone, faMapMarkerAlt, faLock, faEdit, faSpinner, faUserShield, faCamera, faUpload } from '@fortawesome/free-solid-svg-icons';
 import Cookies from 'js-cookie';
@@ -80,7 +80,7 @@ const ProfileSection = () => {
       const formData = new FormData();
       formData.append('image', file);
 
-      const response = await fetch(`${API_BASE}/api/upload`, {
+      const response = await fetch(`/api/upload`, {
         method: 'POST',
         body: formData,
         credentials: 'include'
@@ -151,8 +151,8 @@ const handleSubmit = async (e) => {
     if (profile.image) {
       if (profile.image.startsWith(`${API_BASE}/img/`)) {
         updateData.image = profile.image.replace(`${API_BASE}/img/`, '');
-      } else if (profile.image.startsWith('backend/img/')) {
-        updateData.image = profile.image.replace('backend/img/', '');
+      } else if (profile.image.startsWith('/img/')) {
+        updateData.image = profile.image.replace('/img/', '');
       }
     }
 
@@ -254,7 +254,7 @@ const handleSubmit = async (e) => {
   alt="Profile" 
   className="profile-image"
   onError={(e) => {
-    e.target.src = 'backend/img/profile.png';
+    e.target.src = '/img/profile.png';
   }}
 />
             {editMode && (
@@ -282,10 +282,10 @@ const handleSubmit = async (e) => {
                       </>
                     )}
                   </button>
-                  {profile.image && profile.image !== 'backend/img/profile.png' && (
+                  {profile.image && profile.image !== '/img/profile.png' && (
                     <button 
                       className="image-remove-btn"
-                      onClick={() => setProfile(prev => ({ ...prev, image: 'backend/img/profile.png' }))}
+                      onClick={() => setProfile(prev => ({ ...prev, image: '/img/profile.png' }))}
                       disabled={loading}
                     >
                       Remove

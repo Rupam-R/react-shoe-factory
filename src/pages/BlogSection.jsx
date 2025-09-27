@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faEdit, faTrash, faPlus, faSearch, 
@@ -54,7 +54,7 @@ const BlogSection = () => {
         setError(null);
         
         const response = await axios.get(
-          `${API_BASE_URL}/api/admin/blogs`, 
+          `/api/admin/blogs`, 
           {
             params: {
               page: currentPage,
@@ -126,7 +126,7 @@ const BlogSection = () => {
       uploadFormData.append('image', file);
 
       const response = await axios.post(
-        `${API_BASE_URL}/api/upload-blog-image`,
+        `/api/upload-blog-image`,
         uploadFormData,
         {
           headers: {
@@ -153,7 +153,7 @@ const BlogSection = () => {
       setError(null);
 
       const response = await axios.put(
-        `${API_BASE_URL}/api/admin/blogs/${editBlog.id}`,
+        `/api/admin/blogs/${editBlog.id}`,
         formData,
         { withCredentials: true }
       );
@@ -176,7 +176,7 @@ const BlogSection = () => {
       setError(null);
 
       const response = await axios.post(
-        `${API_BASE_URL}/api/admin/blogs`,
+        `/api/admin/blogs`,
         formData,
         { withCredentials: true }
       );
@@ -204,7 +204,7 @@ const BlogSection = () => {
       try {
         setLoading(true);
         await axios.delete(
-          `${API_BASE_URL}/api/admin/blogs/${blogId}`,
+          `/api/admin/blogs/${blogId}`,
           { withCredentials: true }
         );
         

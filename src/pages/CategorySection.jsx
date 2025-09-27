@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function CategorySection() {
@@ -29,7 +29,7 @@ function CategorySection() {
     try {
       setLoading(true);
       setError('');
-      const response = await axios.get(`${API_BASE}/api/categories`);
+      const response = await axios.get(`/api/categories`);
       // Make sure it's always an array
       setCategories(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
@@ -59,7 +59,7 @@ function CategorySection() {
 
     try {
       setError('');
-      const res = await axios.post(`${API_BASE}/api/upload-category-image`, data, {
+      const res = await axios.post(`/api/upload-category-image`, data, {
         headers: { 
           'Content-Type': 'multipart/form-data',
         }
@@ -87,11 +87,11 @@ function CategorySection() {
       };
 
       if (editingId) {
-        await axios.put(`${API_BASE}/api/admin/categories/${editingId}`, submitData, {
+        await axios.put(`/api/admin/categories/${editingId}`, submitData, {
           withCredentials: true
         });
       } else {
-        await axios.post(`${API_BASE}/api/admin/categories`, submitData, {
+        await axios.post(`/api/admin/categories`, submitData, {
           withCredentials: true
         });
       }
@@ -114,7 +114,7 @@ function CategorySection() {
       date: category.date ? category.date.split('T')[0] : new Date().toISOString().split('T')[0]
     });
     setEditingId(category.id);
-    setImagePreview(category.image ? `${"backend"}${category.image}` : null);
+    setImagePreview(category.image ? `${category.image}` : null);
   };
 
   // Delete category
@@ -122,7 +122,7 @@ function CategorySection() {
     if (window.confirm('Are you sure you want to delete this category?')) {
       try {
         setError('');
-        await axios.delete(`${API_BASE}/api/admin/categories/${id}`, {
+        await axios.delete(`/api/admin/categories/${id}`, {
           withCredentials: true
         });
         fetchCategories();
@@ -215,7 +215,7 @@ function CategorySection() {
                 {formData.image && !imagePreview && (
                   <div className="mt-2">
                     <img
-                      src={`${"backend"}${formData.image}`}
+                      src={`${formData.image}`}
                       alt="Current"
                       style={{ maxWidth: '100%', maxHeight: '200px' }}
                       className="img-thumbnail"
@@ -301,7 +301,7 @@ function CategorySection() {
                       <td>
                         {category.image && (
                           <img
-                            src={`${"backend"}${category.image}`}
+                            src={`${category.image}`}
                             alt={category.name}
                             style={{ maxWidth: '150px', maxHeight: '80px' }}
                             className="img-thumbnail"
