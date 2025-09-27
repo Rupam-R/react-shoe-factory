@@ -38,7 +38,7 @@ library.add(fas)
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter basename="/rupam-roy/shoe-factory/">
+    <BrowserRouter>
       <App />
     </BrowserRouter>
   </React.StrictMode>
