@@ -22,19 +22,6 @@ export async function handler(event, context) {
     if (apiPath.startsWith('/banners')) {
       return await handleCollection(db.ref('banners'), apiPath, httpMethod, event);
     }
-    // Public list endpoints
-    if (apiPath.startsWith('/deals')) {
-      return await handleCollection(db.ref('deals'), apiPath, httpMethod, event);
-    }
-    if (apiPath.startsWith('/weekdeals')) {
-      return await handleCollection(db.ref('weekdeals'), apiPath, httpMethod, event);
-    }
-    if (apiPath.startsWith('/products')) {
-      return await handleCollection(db.ref('products'), apiPath, httpMethod, event);
-    }
-    if (apiPath.startsWith('/brands')) {
-      return await handleCollection(db.ref('brands'), apiPath, httpMethod, event);
-    }
     if (apiPath === '/admin/login' && httpMethod === 'POST') {
       // Minimal stub to avoid 404 during migration; implement real auth later
       return json(200, { success: true, message: 'Logged in (stub)' });
