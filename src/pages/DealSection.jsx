@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faEdit, faTrash, faPlus, faSearch, 
@@ -40,7 +40,7 @@ const DealSection = () => {
   const getImagePath = (imageName) => {
     if (!imageName) return '/img/deal.png';
     if (imageName.startsWith('http') || imageName.startsWith('/')) return imageName;
-    return /deal-img/;
+    return `/deal-img/${imageName}`;
   };
 
   // Check if deal is still valid
@@ -57,7 +57,7 @@ const DealSection = () => {
         setLoading(true);
         setError(null);
         const response = await axios.get(
-          /api/admin/deals,
+          '/api/admin/deals',
           {
             params: {
               page: currentPage,
@@ -110,7 +110,7 @@ const DealSection = () => {
       setLoading(true);
       setError(null);
       const response = await axios.put(
-        /api/admin/deals/,
+        `/api/admin/deals/${editDeal.id}`,
         formData,
         { withCredentials: true }
       );
@@ -135,7 +135,7 @@ const DealSection = () => {
       setLoading(true);
       setError(null);
       const response = await axios.post(
-        /api/admin/deals,
+        '/api/admin/deals',
         formData,
         { withCredentials: true }
       );
@@ -166,7 +166,7 @@ const DealSection = () => {
     if (!window.confirm('Are you sure you want to delete this deal?')) return;
     try {
       setLoading(true);
-      await axios.delete(/api/admin/deals/, { withCredentials: true });
+      await axios.delete(`/api/admin/deals/${dealId}` , { withCredentials: true });
       setDeals(deals.filter(deal => deal.id !== dealId));
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to delete deal');
@@ -184,7 +184,7 @@ const DealSection = () => {
       const previewUrl = URL.createObjectURL(file);
       const uploadFormData = new FormData();
       uploadFormData.append('image', file);
-      const response = await axios.post(/api/upload-deal-image, uploadFormData, {
+      const response = await axios.post('/api/upload-deal-image', uploadFormData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         withCredentials: true
       });
@@ -277,7 +277,7 @@ const DealSection = () => {
                         src={deal.product_image}
                         alt={deal.product_name} 
                         className="deal-thumbnail"
-                        onError={(e) => { e.target.src = /img/deal.png; }}
+                        onError={(e) => { e.target.src = '/img/deal.png'; }}
                       />
                     )}
                   </td>
@@ -285,15 +285,15 @@ const DealSection = () => {
                   <td>{deal.product_name}</td>
                   <td className="details-cell">
                     {deal.deal_details?.length > 50 
-                      ? ${deal.deal_details.substring(0, 50)}... 
+                      ? `${deal.deal_details.substring(0, 50)}...` 
                       : deal.deal_details}
                   </td>
-                  <td></td>
+                  <td>${deal.product_price}</td>
                   <td>
                     <FontAwesomeIcon icon={faCalendar} /> {new Date(deal.deal_valid).toLocaleDateString()}
                   </td>
                   <td>
-                    <span className={status-badge }>
+                    <span className={`status-badge ${deal.is_valid ? 'active' : 'expired'}`}>
                       {deal.is_valid ? 'Active' : 'Expired'}
                     </span>
                   </td>
