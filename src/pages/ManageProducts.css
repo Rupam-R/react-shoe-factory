@@ -1,0 +1,480 @@
+/* ManageProducts.css */
+
+.manage-products-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.products-header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 24px;
+}
+
+.products-actions {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.search-filter {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-box input {
+  padding: 8px 15px 8px 35px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 200px;
+  transition: all 0.3s;
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: #5b9bd5;
+  box-shadow: 0 0 5px rgba(91, 155, 213, 0.5);
+}
+
+.search-box .search-icon {
+  position: absolute;
+  left: 10px;
+  color: #999;
+  font-size: 14px;
+}
+
+.filter-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-dropdown select {
+  padding: 8px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.filter-dropdown select:focus {
+  outline: none;
+  border-color: #5b9bd5;
+}
+
+.add-product-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s;
+}
+
+.add-product-btn:hover {
+  background-color: #45a049;
+}
+
+.add-product-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.products-table-wrapper {
+  overflow-x: auto;
+  margin-bottom: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.products-table th {
+  background-color: #f2f2f2;
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #ddd;
+}
+
+.products-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+}
+
+.products-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.product-thumbnail {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.description-cell {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-btn, .delete-btn {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.edit-btn {
+  background-color: #2196F3;
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #0b7dda;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #da190b;
+}
+
+.no-products {
+  text-align: center;
+  padding: 30px;
+  color: #777;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #f2f2f2;
+}
+
+.pagination button.active {
+  background-color: #5b9bd5;
+  color: white;
+  border-color: #5b9bd5;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.product-modal {
+  background-color: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #777;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+.product-modal form {
+  padding: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #555;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #5b9bd5;
+  box-shadow: 0 0 5px rgba(91, 155, 213, 0.5);
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.image-preview {
+  max-width: 100px;
+  max-height: 100px;
+  display: block;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  border: 1px solid #eee;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.form-actions button {
+  padding: 8px 15px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.form-actions button[type="button"] {
+  background-color: #f2f2f2;
+  border: 1px solid #ddd;
+}
+
+.form-actions button[type="button"]:hover {
+  background-color: #e6e6e6;
+}
+
+.form-actions .save-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+}
+
+.form-actions .save-btn:hover {
+  background-color: #45a049;
+}
+
+.form-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Loading and Error States */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: #555;
+  gap: 10px;
+}
+
+.error {
+  color: #d32f2f;
+  background-color: #fde8e8;
+  padding: 15px;
+  border-radius: 4px;
+  margin: 20px 0;
+  border-left: 4px solid #d32f2f;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .products-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .products-actions {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .search-filter {
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .search-box input {
+    width: 100%;
+  }
+  
+  .add-product-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+/* Add these styles to your ManageProducts.css file */
+
+/* Modal image preview styling */
+.image-preview {
+  max-width: 100%;
+  max-height: 200px;
+  display: block;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  object-fit: contain;
+}
+
+/* Ensure modals have enough space for image preview */
+.product-modal {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Form group adjustments for image upload */
+.form-group {
+  position: relative;
+}
+
+/* Table image sizing */
+.product-thumbnail {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Modal content spacing */
+.modal-header {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .image-preview {
+    max-height: 150px;
+  }
+  
+  .product-modal {
+    width: 95%;
+    margin: 5% auto;
+  }
+}

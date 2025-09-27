@@ -1,0 +1,440 @@
+.deal-section-container {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.deals-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.deals-header h2 {
+  color: #333;
+  margin: 0;
+}
+
+.deals-actions {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.search-filter {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.search-box {
+  position: relative;
+}
+
+.search-box .search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+}
+
+.search-box input {
+  padding: 10px 15px 10px 40px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 250px;
+}
+
+.filter-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-dropdown select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.add-deal-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.add-deal-btn:hover {
+  background-color: #45a049;
+}
+
+.deals-table-wrapper {
+  overflow-x: auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.deals-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.deals-table th,
+.deals-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.deals-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #495057;
+  position: sticky;
+  top: 0;
+}
+
+.deals-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+.active-deal {
+  background-color: #f0fff4;
+}
+
+.expired-deal {
+  background-color: #fff5f5;
+}
+
+.deal-thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.details-cell {
+  max-width: 200px;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-badge.active {
+  background-color: #e6f7ee;
+  color: #00a65a;
+}
+
+.status-badge.expired {
+  background-color: #fde8e8;
+  color: #f56565;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-btn, .delete-btn {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-btn {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.edit-btn:hover {
+  background-color: #e0a800;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+.no-deals {
+  text-align: center;
+  padding: 40px;
+}
+
+.no-deals-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  color: #6c757d;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #f8f9fa;
+}
+
+.pagination button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.deal-modal {
+  background: white;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-header h3 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #6c757d;
+  padding: 5px;
+}
+
+.close-btn:hover {
+  color: #495057;
+}
+
+.deal-modal form {
+  padding: 20px;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #495057;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.image-preview-container {
+  position: relative;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+.image-preview {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.image-upload-input {
+  padding: 5px 0;
+}
+
+.image-upload-hint {
+  font-size: 12px;
+  color: #6c757d;
+  margin-top: 5px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.form-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.form-actions button:first-child {
+  background-color: #6c757d;
+  color: white;
+}
+
+.form-actions button:first-child:hover {
+  background-color: #5a6268;
+}
+
+.save-btn {
+  background-color: #007bff;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.save-btn:hover {
+  background-color: #0069d9;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+}
+
+.loading {
+  color: #007bff;
+}
+
+.error {
+  color: #dc3545;
+}
+
+@media (max-width: 768px) {
+  .deals-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .deals-actions {
+    flex-direction: column;
+  }
+  
+  .search-filter {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .search-box input {
+    width: 100%;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .deal-modal {
+    margin: 10px;
+    width: calc(100% - 20px);
+  }
+}

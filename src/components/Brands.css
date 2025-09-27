@@ -1,0 +1,181 @@
+/* Brands.css */
+.brand-area {
+  padding: 60px 0;
+  background-color: #f9f9f9;
+}
+
+.brand-slider-container {
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.brand-slider-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.brand-slide {
+  flex: 0 0 20%; /* Show 5 brands at a time (100% / 5) */
+  padding: 0 15px;
+  box-sizing: border-box;
+}
+
+.single-brand {
+  text-align: center;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.single-brand:hover {
+  transform: translateY(-5px);
+}
+
+.single-brand img {
+  max-height: 60px;
+  width: auto;
+  object-fit: contain;
+}
+
+.brand-slider-prev,
+.brand-slider-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 18px;
+  z-index: 10;
+  transition: background 0.3s ease;
+}
+
+.brand-slider-prev:hover,
+.brand-slider-next:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.brand-slider-prev {
+  left: 10px;
+}
+
+.brand-slider-next {
+  right: 10px;
+}
+
+.brand-slider-dots {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.brand-slider-dots span {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ccc;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.brand-slider-dots span.active {
+  background: #333;
+}
+
+.brand-slider-dots span:hover {
+  background: #666;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .brand-slide {
+    flex: 0 0 25%; /* Show 4 brands on medium screens */
+  }
+}
+
+@media (max-width: 992px) {
+  .brand-slide {
+    flex: 0 0 33.333%; /* Show 3 brands on tablets */
+  }
+}
+
+@media (max-width: 768px) {
+  .brand-slide {
+    flex: 0 0 50%; /* Show 2 brands on small tablets */
+  }
+  
+  .brand-slider-prev,
+  .brand-slider-next {
+    padding: 8px 12px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .brand-slide {
+    flex: -1% 0 100%; /* Show 1 brand on mobile */
+  }
+  
+  .single-brand {
+    height: 100px;
+    padding: 15px;
+  }
+  
+  .single-brand img {
+    max-height: 50px;
+  }
+}
+
+/* For non-slider layout (5 or fewer brands) */
+.brand-area .row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.brand-area .col {
+  flex: 0 0 20%;
+  max-width: 20%;
+  padding: 0 15px;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 1200px) {
+  .brand-area .col {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+}
+
+@media (max-width: 992px) {
+  .brand-area .col {
+    flex: 0 0 33.333%;
+    max-width: 33.333%;
+  }
+}
+
+@media (max-width: 768px) {
+  .brand-area .col {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 576px) {
+  .brand-area .col {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}

@@ -1,0 +1,99 @@
+
+@media (max-width: 767px) {
+  .single-img {
+    min-width: 50%; } }
+.single-img img {
+  opacity: .2;
+  -webkit-transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s; }
+  @media (max-width: 800px) {
+    .single-img img {
+      margin-bottom: 40px; } }
+  .single-img img:hover {
+    opacity: .8; }
+
+.single-related-product {
+  margin-bottom: 30px;
+  -webkit-transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s; }
+  .single-related-product .desc {
+    margin: 10px 0px 10px 15px; }
+  .single-related-product .price h6 {
+    font-size: 14px;
+    display: inline-block;
+    padding-right: 10px;
+    margin-bottom: 0px; }
+  .single-related-product .price .l-through {
+    text-decoration: line-through;
+    color: #cccccc;
+    margin-bottom: 0; }
+  .single-related-product a {
+    color: #222222;
+    text-transform: uppercase; }
+  .single-related-product:hover .desc a {
+    color: #ffba00; }
+
+@media (max-width: 991px) {
+  .ctg-right {
+    display: none; } }
+    /* Mobile view adjustments for related products */
+@media (max-width: 767px) {
+  .single-related-product {
+    width: 48%; /* Allows for 2 products with some spacing */
+    float: left; /* For older browsers */
+    margin-right: 4%; /* Space between products */
+    margin-bottom: 20px;
+    display: inline-block; /* Modern approach */
+  }
+
+  /* Clear the margin for every 2nd product */
+  .single-related-product:nth-child(2n) {
+    margin-right: 0;
+  }
+
+  /* Flexbox alternative for better control */
+  .related-products-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  /* Adjust image sizing for mobile */
+  .single-img {
+    min-width: 100%; /* Make images fill their container */
+    margin-bottom: 15px;
+  }
+
+  .single-img img {
+    opacity: 0.5; /* Slightly more visible by default on mobile */
+    margin-bottom: 0; /* Override previous mobile margin */
+  }
+
+  /* Adjust product details for smaller screens */
+  .single-related-product .desc {
+    margin: 5px 0 5px 5px;
+    font-size: 12px;
+    min-width: 100px;
+  }
+
+  .single-related-product .price h6 {
+    font-size: 12px;
+    padding-right: 5px;
+  }
+
+  /* Make sure the container clears the floats */
+  .related-products-container::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  .week-deal-img{
+  max-width:100px !important;
+  height:70px !important;
+  object-fit:cover !important;
+}
+}

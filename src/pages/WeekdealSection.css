@@ -1,0 +1,559 @@
+/* WeekdealSection.css */
+
+.manage-weekdeals-container {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.weekdeals-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.weekdeals-header h2 {
+  color: #2c3e50;
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.weekdeals-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.search-filter {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-box .search-icon {
+  position: absolute;
+  left: 12px;
+  color: #7f8c8d;
+  z-index: 1;
+}
+
+.search-box input {
+  padding: 10px 15px 10px 40px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  min-width: 250px;
+  transition: border-color 0.3s ease;
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.add-weekdeal-btn {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.add-weekdeal-btn:hover {
+  background: linear-gradient(135deg, #2980b9, #3498db);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.add-weekdeal-btn:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.weekdeals-table-wrapper {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+.weekdeals-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.weekdeals-table th {
+  background: linear-gradient(135deg, #2c3e50, #34495e);
+  color: white;
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.weekdeals-table td {
+  padding: 15px;
+  border-bottom: 1px solid #ecf0f1;
+  font-size: 14px;
+}
+
+.weekdeals-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+.weekdeal-thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 2px solid #e0e0e0;
+}
+
+.weekdeal-banner-thumbnail {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 2px solid #e0e0e0;
+}
+
+.details-cell {
+  max-width: 200px;
+  word-wrap: break-word;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-btn, .delete-btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-btn {
+  background: #f39c12;
+  color: white;
+}
+
+.edit-btn:hover {
+  background: #e67e22;
+}
+
+.delete-btn {
+  background: #e74c3c;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+}
+
+.edit-btn:disabled, .delete-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.no-weekdeals {
+  text-align: center;
+  color: #7f8c8d;
+  font-style: italic;
+  padding: 40px !important;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 10px 16px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: #3498db;
+  color: white;
+  border-color: #3498db;
+}
+
+.pagination button.active {
+  background: #3498db;
+  color: white;
+  border-color: #3498db;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.weekdeal-modal {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 30px;
+  border-bottom: 1px solid #ecf0f1;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #7f8c8d;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  color: #e74c3c;
+  background: #f8f9fa;
+}
+
+.close-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.weekdeal-modal form {
+  padding: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.form-group input:disabled,
+.form-group textarea:disabled {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+}
+
+.image-preview-container {
+  position: relative;
+  margin-bottom: 15px;
+  display: inline-block;
+}
+
+.image-preview {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: all 0.3s ease;
+}
+
+.remove-image-btn:hover {
+  background: #c0392b;
+  transform: scale(1.1);
+}
+
+.image-upload-area {
+  position: relative;
+}
+
+.image-upload-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  background: #ecf0f1;
+  border: 2px dashed #bdc3c7;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  color: #7f8c8d;
+}
+
+.image-upload-label:hover {
+  background: #dfe6e9;
+  border-color: #95a5a6;
+}
+
+.image-upload-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #ecf0f1;
+}
+
+.form-actions button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-actions button:first-child {
+  background: #95a5a6;
+  color: white;
+}
+
+.form-actions button:first-child:hover {
+  background: #7f8c8d;
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #27ae60, #229954);
+  color: white;
+}
+
+.save-btn:hover {
+  background: linear-gradient(135deg, #229954, #27ae60);
+  transform: translateY(-1px);
+}
+
+.form-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Loading and Error States */
+.loading, .error {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.loading {
+  color: #3498db;
+}
+
+.error {
+  color: #e74c3c;
+  background: #fadbd8;
+  border-radius: 8px;
+  margin: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .manage-weekdeals-container {
+    padding: 15px;
+  }
+  
+  .weekdeals-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .weekdeals-actions {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .search-box input {
+    min-width: 100%;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .weekdeals-table {
+    font-size: 12px;
+  }
+  
+  .weekdeals-table th,
+  .weekdeals-table td {
+    padding: 10px;
+  }
+  
+  .weekdeal-thumbnail {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .weekdeal-banner-thumbnail {
+    width: 80px;
+    height: 30px;
+  }
+  
+  .actions {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .modal-overlay {
+    padding: 10px;
+  }
+  
+  .weekdeal-modal {
+    width: 95%;
+  }
+  
+  .modal-header {
+    padding: 20px;
+  }
+  
+  .weekdeal-modal form {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .weekdeals-table {
+    display: block;
+    overflow-x: auto;
+  }
+  
+  .pagination {
+    flex-wrap: wrap;
+  }
+  
+  .pagination button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .form-actions button {
+    justify-content: center;
+  }
+}
