@@ -37,7 +37,7 @@ export function checkFirebaseConnection(timeoutMs = 5000) {
         resolve(false);
       }, timeoutMs);
 
-      const unsubscribe = onValue(
+      onValue(
         connectedRef,
         (snap) => {
           clearTimeout(timeout);
@@ -45,18 +45,12 @@ export function checkFirebaseConnection(timeoutMs = 5000) {
           const isConnected = !!snap.val();
           console.log('[Firebase] RTDB connected:', isConnected);
           resolve(isConnected);
-          if (typeof unsubscribe === 'function') {
-            unsubscribe();
-          }
         },
         (error) => {
           clearTimeout(timeout);
           off(connectedRef);
           console.error('[Firebase] RTDB connection error:', error?.message || error);
           resolve(false);
-          if (typeof unsubscribe === 'function') {
-            unsubscribe();
-          }
         }
       );
     } catch (err) {
