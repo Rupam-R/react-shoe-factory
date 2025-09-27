@@ -7,6 +7,7 @@ import multer from 'multer';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import dotenv from 'dotenv';
+import admin from 'firebase-admin';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -15,6 +16,37 @@ const __dirname = dirname(__filename);
 dotenv.config();
 
 const app = express();
+
+// Optional Firebase Admin initialization (for local/legacy server usage)
+let firebaseInit = { initialized: false, error: null };
+try {
+  const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT;
+  const databaseURL = process.env.DATABASE_URL;
+  if (serviceAccountJson && databaseURL) {
+    const creds = JSON.parse(serviceAccountJson);
+    if (!admin.apps.length) {
+      admin.initializeApp({
+        credential: admin.credential.cert(creds),
+        databaseURL,
+      });
+    }
+    firebaseInit.initialized = true;
+    // Perform a light async connectivity check without blocking startup
+    admin.database().ref('.info/connected').get()
+      .then(() => {
+        console.log('Firebase connected.');
+      })
+      .catch((e) => {
+        firebaseInit.error = e?.message || String(e);
+        console.error('Firebase connectivity error:', firebaseInit.error);
+      });
+  } else {
+    console.error('Firebase not configured: set FIREBASE_SERVICE_ACCOUNT and DATABASE_URL env vars.');
+  }
+} catch (e) {
+  firebaseInit.error = e?.message || String(e);
+  console.error('Firebase initialization error:', firebaseInit.error);
+}
 
 // Middleware setup
 // Allow local dev and an optional production origin from env (e.g., your Netlify site)
@@ -45,6 +77,33 @@ app.use('/service-img', express.static(path.join(__dirname, 'service-img')));
 app.use('/category-img', express.static(path.join(__dirname, 'category-img')));
 app.use('/deal-img', express.static(path.join(__dirname, 'deal-img')));
 app.use('/weekdeal-img', express.static(path.join(__dirname, 'weekdeal-img')));
+
+// Health endpoint to verify backend connectivity
+app.get('/api/health', async (req, res) => {
+  const status = { mysql: 'unknown', firebase: 'not_configured' };
+  try {
+    // MySQL status (best-effort)
+    status.mysql = db && db.threadId ? 'connected' : 'unknown';
+  } catch (_) {
+    status.mysql = 'error';
+  }
+
+  if (firebaseInit.initialized) {
+    try {
+      await admin.database().ref('.info/connected').get();
+      status.firebase = 'connected';
+    } catch (e) {
+      status.firebase = 'error';
+      status.firebaseError = e?.message || String(e);
+      console.error('Firebase connectivity error (health):', status.firebaseError);
+    }
+  } else {
+    status.firebase = 'not_configured';
+    status.firebaseError = firebaseInit.error || 'Missing FIREBASE_SERVICE_ACCOUNT or DATABASE_URL';
+  }
+
+  res.json(status);
+});
 
 // Database connection
 const db = mysql.createConnection({
