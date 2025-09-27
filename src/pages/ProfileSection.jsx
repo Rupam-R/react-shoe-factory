@@ -1,8 +1,7 @@
-﻿import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faEnvelope, faPhone, faMapMarkerAlt, faLock, faEdit, faSpinner, faUserShield, faCamera, faUpload } from '@fortawesome/free-solid-svg-icons';
 import Cookies from 'js-cookie';
-import { API_BASE } from '../config/api';
 
 const ProfileSection = () => {
   const [editMode, setEditMode] = useState(false);
@@ -38,7 +37,7 @@ const ProfileSection = () => {
         setIsAdmin(isAdmin);
         
         const endpoint = isAdmin ? `/api/admin/users/${userId}` : `/api/users/${userId}`;
-        const response = await fetch(`${API_BASE}${endpoint}`, { credentials: 'include' });
+        const response = await fetch(`http://localhost:5000${endpoint}`);
         
         if (!response.ok) {
           throw new Error('Failed to fetch profile data');
@@ -50,7 +49,7 @@ const ProfileSection = () => {
           ...prev,
           name: data.username || '',
           email: data.email || '',
-          image: data.image ? `${API_BASE}/img/${data.image}` : `${API_BASE}/img/profile.png`,
+          image: data.image ? `backend/img/${data.image}` : 'backend/img/profile.png',
           phone: data.phone || '',
           address: data.address || '',
           bio: data.bio || ''
@@ -80,10 +79,9 @@ const ProfileSection = () => {
       const formData = new FormData();
       formData.append('image', file);
 
-      const response = await fetch(`/api/upload`, {
+      const response = await fetch('http://localhost:5000/api/upload', {
         method: 'POST',
-        body: formData,
-        credentials: 'include'
+        body: formData
       });
 
       if (!response.ok) {
@@ -91,7 +89,7 @@ const ProfileSection = () => {
       }
 
       const data = await response.json();
-      setProfile(prev => ({ ...prev, image: `${API_BASE}/img/${data.filename}` }));
+      setProfile(prev => ({ ...prev, image: `/img/${data.filename}` }));
       setSuccess('Profile image updated successfully');
     } catch (err) {
       setError(err.message);
@@ -149,20 +147,19 @@ const handleSubmit = async (e) => {
 
     // Fix image path handling - check for both possible paths
     if (profile.image) {
-      if (profile.image.startsWith(`${API_BASE}/img/`)) {
-        updateData.image = profile.image.replace(`${API_BASE}/img/`, '');
-      } else if (profile.image.startsWith('/img/')) {
+      if (profile.image.startsWith('/img/')) {
         updateData.image = profile.image.replace('/img/', '');
+      } else if (profile.image.startsWith('backend/img/')) {
+        updateData.image = profile.image.replace('backend/img/', '');
       }
     }
 
-    const response = await fetch(`${API_BASE}${endpoint}`, {
+    const response = await fetch(`http://localhost:5000${endpoint}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(updateData),
-      credentials: 'include'
+      body: JSON.stringify(updateData)
     });
     
 
@@ -254,7 +251,7 @@ const handleSubmit = async (e) => {
   alt="Profile" 
   className="profile-image"
   onError={(e) => {
-    e.target.src = '/img/profile.png';
+    e.target.src = 'backend/img/profile.png';
   }}
 />
             {editMode && (
@@ -282,10 +279,10 @@ const handleSubmit = async (e) => {
                       </>
                     )}
                   </button>
-                  {profile.image && profile.image !== '/img/profile.png' && (
+                  {profile.image && profile.image !== 'backend/img/profile.png' && (
                     <button 
                       className="image-remove-btn"
-                      onClick={() => setProfile(prev => ({ ...prev, image: '/img/profile.png' }))}
+                      onClick={() => setProfile(prev => ({ ...prev, image: 'backend/img/profile.png' }))}
                       disabled={loading}
                     >
                       Remove

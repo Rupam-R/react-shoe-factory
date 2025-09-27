@@ -6,111 +6,26 @@ import path from 'path';
 import multer from 'multer';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import dotenv from 'dotenv';
-import admin from 'firebase-admin';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Load environment variables
-dotenv.config();
-
 const app = express();
 
-// Optional Firebase Admin initialization (for local/legacy server usage)
-let firebaseInit = { initialized: false, error: null };
-try {
-  const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT;
-  const databaseURL = process.env.DATABASE_URL;
-  if (serviceAccountJson && databaseURL) {
-    const creds = JSON.parse(serviceAccountJson);
-    if (!admin.apps.length) {
-      admin.initializeApp({
-        credential: admin.credential.cert(creds),
-        databaseURL,
-      });
-    }
-    firebaseInit.initialized = true;
-    // Perform a light async connectivity check without blocking startup
-    admin.database().ref('.info/connected').get()
-      .then(() => {
-        console.log('Firebase connected.');
-      })
-      .catch((e) => {
-        firebaseInit.error = e?.message || String(e);
-        console.error('Firebase connectivity error:', firebaseInit.error);
-      });
-  } else {
-    console.error('Firebase not configured: set FIREBASE_SERVICE_ACCOUNT and DATABASE_URL env vars.');
-  }
-} catch (e) {
-  firebaseInit.error = e?.message || String(e);
-  console.error('Firebase initialization error:', firebaseInit.error);
-}
-
 // Middleware setup
-// Allow local dev and an optional production origin from env (e.g., your Netlify site)
-const DEFAULT_ALLOWED_ORIGINS = ['http://localhost:3000', 'http://localhost:5173'];
-const ENV_ALLOWED_ORIGIN = process.env.CORS_ORIGIN ? [process.env.CORS_ORIGIN] : [];
-const ALLOWED_ORIGINS = [...DEFAULT_ALLOWED_ORIGINS, ...ENV_ALLOWED_ORIGIN];
-
 app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests with no origin like curl or mobile apps
-    if (!origin) return callback(null, true);
-    if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
-    // Also allow HTTPS variants of Netlify preview/production domains via pattern
-    const netlifyPattern = /^https?:\/\/([a-z0-9-]+--)?.+netlify\.app$/i;
-    if (netlifyPattern.test(origin)) return callback(null, true);
-    return callback(new Error('Not allowed by CORS'));
-  },
+  origin: ['http://localhost:3000', 'http://localhost:5173'],
   credentials: true
 }));
 app.use(express.json());
 app.use(cookieParser());
 
-// Serve static assets for uploaded images so frontend can load them via `${API_BASE}/<folder>/<file>`
-app.use('/img', express.static(path.join(__dirname, 'img')));
-app.use('/product-img', express.static(path.join(__dirname, 'product-img')));
-app.use('/banner-img', express.static(path.join(__dirname, 'banner-img')));
-app.use('/service-img', express.static(path.join(__dirname, 'service-img')));
-app.use('/category-img', express.static(path.join(__dirname, 'category-img')));
-app.use('/deal-img', express.static(path.join(__dirname, 'deal-img')));
-app.use('/weekdeal-img', express.static(path.join(__dirname, 'weekdeal-img')));
-
-// Health endpoint to verify backend connectivity
-app.get('/api/health', async (req, res) => {
-  const status = { mysql: 'unknown', firebase: 'not_configured' };
-  try {
-    // MySQL status (best-effort)
-    status.mysql = db && db.threadId ? 'connected' : 'unknown';
-  } catch (_) {
-    status.mysql = 'error';
-  }
-
-  if (firebaseInit.initialized) {
-    try {
-      await admin.database().ref('.info/connected').get();
-      status.firebase = 'connected';
-    } catch (e) {
-      status.firebase = 'error';
-      status.firebaseError = e?.message || String(e);
-      console.error('Firebase connectivity error (health):', status.firebaseError);
-    }
-  } else {
-    status.firebase = 'not_configured';
-    status.firebaseError = firebaseInit.error || 'Missing FIREBASE_SERVICE_ACCOUNT or DATABASE_URL';
-  }
-
-  res.json(status);
-});
-
 // Database connection
 const db = mysql.createConnection({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASS || '',
-  database: process.env.DB_NAME || 'shoe_factory'
+  host: 'localhost',
+  user: 'root',
+  password: '', // Add your MySQL password
+  database: 'shoe_factory'
 });
 
 db.connect(err => {

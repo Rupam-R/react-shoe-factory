@@ -7,7 +7,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import './WeekdealSection.css';
-import { API_BASE } from '@/config/api';
 
 const API_BASE_URL = import.meta.env.MODE === 'development' 
   ? 'http://localhost:5000'
@@ -56,7 +55,7 @@ const WeekdealSection = () => {
         setError(null);
         
         const response = await axios.get(
-          `${API_BASE}/api/admin/weekdeals`, 
+          `/api/admin/weekdeals`, 
           {
             params: {
               page: currentPage,
@@ -67,18 +66,14 @@ const WeekdealSection = () => {
           }
         );
 
-        const rawDeals = Array.isArray(response.data)
-          ? response.data
-          : (response.data.deals || []);
-
-        const dealsWithImagePaths = rawDeals.map(deal => ({
+        const dealsWithImagePaths = response.data.deals?.map(deal => ({
           ...deal,
           product_image: getImagePath(deal.product_image),
           deal_image: getImagePath(deal.deal_image)
-        }));
+        })) || [];
 
         setDeals(dealsWithImagePaths);
-        setTotalPages((Array.isArray(response.data) ? 1 : (response.data.pagination?.totalPages || 1)));
+        setTotalPages(response.data.pagination?.totalPages || 1);
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to fetch week deals');
       } finally {
@@ -120,17 +115,16 @@ const WeekdealSection = () => {
       setError(null);
 
       const response = await axios.put(
-        `${API_BASE}/api/admin/weekdeals/${editDeal.id}`,
+        `/api/admin/weekdeals/${editDeal.id}`,
         formData,
         { withCredentials: true }
       );
 
-      const updated = response.data.deal || response.data; // support both shapes
       setDeals(deals.map(deal => 
         deal.id === editDeal.id ? {
-          ...updated,
-          product_image: getImagePath(updated.product_image),
-          deal_image: getImagePath(updated.deal_image)
+          ...response.data.deal,
+          product_image: getImagePath(response.data.deal.product_image),
+          deal_image: getImagePath(response.data.deal.deal_image)
         } : deal
       ));
       setShowEditModal(false);
@@ -148,16 +142,15 @@ const WeekdealSection = () => {
       setError(null);
 
       const response = await axios.post(
-        `${API_BASE}/api/admin/weekdeals`,
+        `/api/admin/weekdeals`,
         formData,
         { withCredentials: true }
       );
 
-      const created = response.data.deal || response.data;
       setDeals([{
-        ...created,
-        product_image: getImagePath(created.product_image),
-        deal_image: getImagePath(created.deal_image)
+        ...response.data.deal,
+        product_image: getImagePath(response.data.deal.product_image),
+        deal_image: getImagePath(response.data.deal.deal_image)
       }, ...deals]);
       setShowAddModal(false);
       setFormData({
@@ -183,7 +176,7 @@ const WeekdealSection = () => {
       try {
         setLoading(true);
         await axios.delete(
-          `${API_BASE}/api/admin/weekdeals/${dealId}`,
+          `/api/admin/weekdeals/${dealId}`,
           { withCredentials: true }
         );
         
@@ -219,7 +212,7 @@ const WeekdealSection = () => {
       uploadFormData.append('image', file);
 
       const response = await axios.post(
-        `${API_BASE}/api/upload-weekdeal-image`,
+        `/api/upload-weekdeal-image`,
         uploadFormData,
         {
           headers: {

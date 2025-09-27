@@ -1,8 +1,11 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faSearch, faTimes, faSave, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import './ManageUsers.css';
-import { API_BASE } from '../config/api';
+
+const API_BASE_URL = import.meta.env.MODE === 'development' 
+  ? 'http://localhost:5000'
+  : '';
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
@@ -31,7 +34,7 @@ const ManageUsers = () => {
       setError(null);
       
       const response = await fetch(
-        `/api/admin/users?page=${currentPage}&limit=${DEFAULT_PAGE_SIZE}&search=${searchTerm}`, 
+        `${API_BASE_URL}/api/admin/users?page=${currentPage}&limit=${DEFAULT_PAGE_SIZE}&search=${searchTerm}`, 
         {
           credentials: 'include',
           headers: {
@@ -97,7 +100,7 @@ const ManageUsers = () => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/admin/manage-users/${editUser.id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/admin/manage-users/${editUser.id}`, {
         method: 'PUT',
         credentials: 'include',
         headers: {
@@ -135,7 +138,7 @@ const ManageUsers = () => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       try {
         setLoading(true);
-        const response = await fetch(`/api/admin/users/${userId}`, {
+        const response = await fetch(`${API_BASE_URL}/api/admin/users/${userId}`, {
           method: 'DELETE',
           credentials: 'include'
         });

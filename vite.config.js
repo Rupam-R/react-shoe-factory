@@ -16,7 +16,7 @@ export default defineConfig({
   //     }
   //   }
   // },
-  base: '/',
+  base: '/rupam-roy/shoe-factory/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src')
