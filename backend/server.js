@@ -2165,6 +2165,6 @@ app.post('/api/logout', (req, res) => {
   res.json({ message: 'Logged out successfully' });
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || "https://factoryshoe.netlify.app/";
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
