@@ -19,6 +19,13 @@ export async function handler(event, context) {
     if (apiPath.startsWith('/admin/users')) {
       return await handleUsers(db, apiPath, httpMethod, event);
     }
+    if (apiPath.startsWith('/banners')) {
+      return await handleCollection(db.ref('banners'), apiPath, httpMethod, event);
+    }
+    if (apiPath === '/admin/login' && httpMethod === 'POST') {
+      // Minimal stub to avoid 404 during migration; implement real auth later
+      return json(200, { success: true, message: 'Logged in (stub)' });
+    }
     if (apiPath.startsWith('/admin/products')) {
       return await handleCollection(db.ref('products'), apiPath.replace('/admin', ''), httpMethod, event);
     }
